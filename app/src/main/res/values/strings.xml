@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">bluetoothdebug</string>
+    <string name="button_text_start_scan">Start Scan</string>
+    <string name="button_text_connect">Connect</string>
+    <string name="button_text_disconnect">Disconnect</string>
+    <string name="button_text_stop_scanning">Stop Scanning</string>
+</resources>

@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="uk.co.alt236.bluetoothdebug">
+
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <application/>
+
+</manifest>

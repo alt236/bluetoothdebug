@@ -1,0 +1,130 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+final int versionMajor = 1
+final int versionMinor = 0
+final int versionPatch = 0
+
+final String gitHubRepo = 'alt236/bluetoothdebug'
+final String artifactName = 'bluetoothdebug'
+final String artifactDesc = 'Provides custom wrappers to Bluetooth callbacks which log info each time one of its methods is called'
+final String[] tags = ['bluetooth', 'debugging', 'android']
+
+final String artifactGroupId = 'uk.co.alt236'
+final String semanticVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+final String gitHubUrl = "https://github.com/${gitHubRepo}"
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 27
+        versionCode 1
+        versionName semanticVersion
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "DEFAULT_GATT_LOG_TAG", "\"BTDebug-GATT\""
+        buildConfigField "String", "DEFAULT_SCAN_LOG_TAG", "\"BTDebug-SCAN\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compileOnly 'com.android.support:support-annotations:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.robolectric:robolectric:3.5.1"
+    testImplementation "org.mockito:mockito-core:2.18.0"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId artifactGroupId
+            artifactId artifactName
+            version semanticVersion
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            // this can go horribly horribly wrong if the directory is not
+            // named after its module
+            String moduleName = ((File) buildDir).getParentFile().getName()
+
+            artifact "$buildDir/outputs/aar/$moduleName-release.aar"
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('alt236JCenterUser') ? alt236JCenterUser : "<NO USER NAME>"
+    key = project.hasProperty('alt236JCenterToken') ? alt236JCenterToken : "<NO TOKEN>"
+
+    dryRun = false
+    publish = false
+    publications = ['mavenJava']
+    pkg {
+        repo = 'maven'
+        // userOrg = 'myorg' //An optional organization name when the repo belongs to one of the user's orgs
+        name = artifactName
+        desc = artifactDesc
+        websiteUrl = "${gitHubUrl}"
+        issueTrackerUrl = "${gitHubUrl}/issues"
+        vcsUrl = "${gitHubUrl}.git"
+        labels = tags
+        licenses = ['Apache-2.0']
+        publicDownloadNumbers = true
+        githubRepo = "${gitHubRepo}"
+        githubReleaseNotesFile = 'README.md'
+
+        version {
+            name = semanticVersion
+            //desc = 'optional, version-specific description'
+            mavenCentralSync {
+                sync = false
+                // Optional (true by default). Determines whether to sync the version to Maven Central.
+                user = 'userToken' //OSS user token
+                password = 'paasword' //OSS user password
+                close = '1'
+                // Optional property. By default the staging repository is closed and artifacts are released to Maven Central.
+                // You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            }
+        }
+    }
+
+    if (project.hasProperty("android")) { // Android libraries
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from android.sourceSets.main.java.srcDirs
+        }
+
+        task javadoc(type: Javadoc) {
+            source = android.sourceSets.main.java.srcDirs
+            classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        }
+    } else { // Java libraries
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+}
