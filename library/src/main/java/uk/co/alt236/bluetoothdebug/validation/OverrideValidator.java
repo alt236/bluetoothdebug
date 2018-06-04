@@ -1,4 +1,4 @@
-package uk.co.alt236.bluetoothdebug.reflection;
+package uk.co.alt236.bluetoothdebug.validation;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

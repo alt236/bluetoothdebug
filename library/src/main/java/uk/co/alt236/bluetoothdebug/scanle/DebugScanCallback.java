@@ -10,6 +10,7 @@ import android.support.annotation.VisibleForTesting;
 import java.util.List;
 
 import uk.co.alt236.bluetoothdebug.BuildConfig;
+import uk.co.alt236.bluetoothdebug.deviceinfo.DeviceInfoPrinter;
 import uk.co.alt236.bluetoothdebug.log.LogControl;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -48,6 +49,7 @@ public class DebugScanCallback extends ScanCallback implements LogControl {
         this.callback = callback;
         this.logger = logger;
 
+        new DeviceInfoPrinter(logTag).print();
         new Validator(logTag).validate(
                 callback.getClass(),
                 this.getClass());

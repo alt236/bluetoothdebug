@@ -11,6 +11,7 @@ import android.support.annotation.VisibleForTesting;
 
 import uk.co.alt236.bluetoothdebug.BuildConfig;
 import uk.co.alt236.bluetoothdebug.byteformat.ByteFormat;
+import uk.co.alt236.bluetoothdebug.deviceinfo.DeviceInfoPrinter;
 import uk.co.alt236.bluetoothdebug.log.LogControl;
 
 
@@ -51,6 +52,7 @@ public class DebugBluetoothGattCallback extends BluetoothGattCallback implements
         this.logger = logger;
         this.callback = callback;
 
+        new DeviceInfoPrinter(logTag).print();
         new Validator(logTag).validate(
                 callback.getClass(),
                 this.getClass());
