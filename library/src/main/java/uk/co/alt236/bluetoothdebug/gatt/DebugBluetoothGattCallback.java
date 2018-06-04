@@ -32,7 +32,7 @@ public class DebugBluetoothGattCallback extends BluetoothGattCallback implements
     @SuppressWarnings({"unused", "WeakerAccess"})
     public DebugBluetoothGattCallback(@NonNull ByteFormat byteFormat,
                                       @NonNull BluetoothGattCallback callback) {
-        this(DEFAULT_TAG, DEFAULT_BYTE_FORMAT, callback);
+        this(DEFAULT_TAG, byteFormat, callback);
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
