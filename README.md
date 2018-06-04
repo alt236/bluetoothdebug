@@ -15,15 +15,15 @@ If your app does not need any of the listed, non-overridden, methods, then there
 
 <b>gradle</b>
 ```groovy
-	repositories {
-		maven {
-			url "https://dl.bintray.com/alt236/maven"
-		}
-	}
-
-	dependencies {
-		compile 'uk.co.alt236:bluetoothdebug:1.0.0'
-	}
+    repositories {
+        maven {
+            url "https://dl.bintray.com/alt236/maven"
+        }
+    }
+    
+    dependencies {
+        compile 'uk.co.alt236:bluetoothdebug:1.0.1'
+    }
 ```
 
 ## Usage
@@ -101,8 +101,12 @@ Will display the array the way Java prints byte arrays.
 For example:
 `[255, 0, 1, 65, 97, 127]` would be displayed as `[-1, 0, 1, 65, 97, 127]`
 
+## Changelog 
+* 1.0.0: First public release
+* 1.0.1: Fixes for #2 and #3
+
 ## License
-    Copyright (C) 2018 Alexandros Schillings
+    Copyright (C) 2018-present Alexandros Schillings
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
