@@ -4,7 +4,7 @@ apply plugin: 'com.jfrog.bintray'
 
 final int versionMajor = 1
 final int versionMinor = 0
-final int versionPatch = 0
+final int versionPatch = 1
 
 final String gitHubRepo = 'alt236/bluetoothdebug'
 final String artifactName = 'bluetoothdebug'
